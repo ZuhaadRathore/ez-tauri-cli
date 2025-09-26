@@ -1,0 +1,10 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "default",
+  "description": "Default security capabilities for the main application window",
+  "windows": ["main"],
+  "permissions": [
+    "core:default",    // Essential Tauri core functionality
+    "opener:default"   // File and URL opening capabilities
+  ]
+}
