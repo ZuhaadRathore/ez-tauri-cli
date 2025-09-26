@@ -196,21 +196,25 @@ npm run tauri:build
 - Enhanced CI/CD pipelines with dependency caching
 - Streamlined code signing workflow
 
-**Upcoming Features:**
+**Additional Features:**
 
 ```bash
 # Initialize Tauri in existing React project
 ez-tauri init
 
-# Add capabilities to existing projects
-ez-tauri add database      # Add PostgreSQL integration
-ez-tauri add testing       # Add test infrastructure
-ez-tauri add auth          # Add authentication
-ez-tauri add updater       # Add auto-update capability
+# Module management
+ez-tauri modules list                    # List all available modules
+ez-tauri modules install database       # Install PostgreSQL integration
+ez-tauri modules install testing        # Install test infrastructure
+ez-tauri modules install auth           # Install authentication
+ez-tauri modules install updater        # Install auto-update capability
+ez-tauri modules uninstall <module-id>  # Remove a module
+ez-tauri modules info <module-id>       # Show module information
+ez-tauri modules config <module-id> <key> <value>  # Configure module
+ez-tauri modules sync                    # Sync module configuration
 
 # Project management
-ez-tauri upgrade           # Update Tauri and dependencies
-ez-tauri doctor           # Diagnose setup issues
+ez-tauri doctor                         # Diagnose setup issues
 ```
 
 ## Configuration
