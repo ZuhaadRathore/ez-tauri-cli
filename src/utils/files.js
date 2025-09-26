@@ -79,15 +79,32 @@ export async function installDependencies(projectPath, packageManager) {
   try {
     const installCommand = getInstallCommand(packageManager);
 
+    // Check if package manager exists
+    try {
+      execSync(`${packageManager} --version`, { stdio: 'ignore' });
+    } catch {
+      spinner.fail(`${packageManager} not found`);
+      console.log(chalk.yellow(`Please install ${packageManager} or use npm instead.`));
+      console.log(chalk.gray(`You can install dependencies manually by running: ${getInstallCommand('npm')}`));
+      return;
+    }
+
     execSync(installCommand, {
       cwd: projectPath,
-      stdio: 'ignore'
+      stdio: 'ignore',
+      timeout: 300000 // 5 minutes timeout
     });
 
     spinner.succeed('Dependencies installed successfully');
   } catch (error) {
     spinner.fail('Failed to install dependencies');
-    console.log(chalk.yellow(`You can install them manually by running: ${getInstallCommand(packageManager)}`));
+    if (error.code === 'TIMEOUT') {
+      console.log(chalk.yellow('Installation timed out. You can complete it manually:'));
+    } else {
+      console.log(chalk.yellow('Installation failed. You can try manually:'));
+    }
+    console.log(chalk.gray(`  cd ${path.basename(projectPath)}`));
+    console.log(chalk.gray(`  ${getInstallCommand(packageManager)}`));
   }
 }
 
