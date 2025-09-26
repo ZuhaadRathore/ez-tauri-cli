@@ -31,7 +31,15 @@ export async function createProject(projectName, options) {
       console.log(chalk.yellow('\nPlease install the missing prerequisites and try again.'));
       process.exit(1);
     }
-    spinner.succeed('Prerequisites check passed');
+
+    if (prereqCheck.warnings?.length > 0) {
+      spinner.warn('Prerequisites check completed with warnings');
+      prereqCheck.warnings.forEach(warning => {
+        console.log(chalk.yellow(`⚠️  ${warning}`));
+      });
+    } else {
+      spinner.succeed('Prerequisites check passed');
+    }
 
     // Create project directory
     const projectPath = path.resolve(process.cwd(), projectName);
@@ -49,15 +57,38 @@ export async function createProject(projectName, options) {
       await initGit(projectPath);
     }
 
-    // Success message
-    console.log(chalk.green.bold(`\n✅ Project "${projectName}" created successfully!\n`));
-    console.log(chalk.cyan('Next steps:'));
-    console.log(chalk.white(`  cd ${projectName}`));
+    // Success message and project info
+    console.log(chalk.green.bold(`\n🎉 Project "${projectName}" created successfully!\n`));
+
+    // Project details
+    console.log(chalk.cyan('Project Details:'));
+    console.log(chalk.white(`  📁 Location: ${projectPath}`));
+    console.log(chalk.white(`  📋 Template: ${config.template}`));
+    console.log(chalk.white(`  📦 Package Manager: ${config.packageManager}`));
+    console.log(chalk.white(`  👤 Author: ${config.author} <${config.email}>`));
+
+    console.log(chalk.cyan('\nNext Steps:'));
+    console.log(chalk.white(`  1. cd ${projectName}`));
     if (!config.install) {
-      console.log(chalk.white(`  ${config.packageManager} install`));
+      console.log(chalk.white(`  2. ${config.packageManager} install`));
+      console.log(chalk.white(`  3. ${config.packageManager} run dev`));
+    } else {
+      console.log(chalk.white(`  2. ${config.packageManager} run dev`));
     }
-    console.log(chalk.white(`  ${config.packageManager} run dev`));
-    console.log(chalk.gray('\nHappy coding! 🎉\n'));
+
+    // Template-specific instructions
+    if (config.template === 'full' || config.template === 'database') {
+      console.log(chalk.cyan('\nDatabase Setup (if using database features):'));
+      console.log(chalk.white('  1. docker-compose up -d'));
+      console.log(chalk.white('  2. Configure your .env file'));
+    }
+
+    console.log(chalk.cyan('\nUseful Commands:'));
+    console.log(chalk.gray(`  ${config.packageManager} run build         # Build for production`));
+    console.log(chalk.gray(`  ${config.packageManager} run tauri:build   # Package desktop app`));
+    console.log(chalk.gray(`  ${config.packageManager} run test          # Run tests`));
+
+    console.log(chalk.green.bold('\n🚀 Happy coding!\n'));
 
   } catch (error) {
     console.error(chalk.red(`\n❌ Error creating project: ${error.message}`));
@@ -73,12 +104,31 @@ async function gatherProjectConfig(projectName, options) {
     config.template = await select({
       message: 'Choose a template:',
       choices: [
-        { name: 'Full - Complete boilerplate with all features', value: 'full' },
-        { name: 'Minimal - Basic Tauri + React setup', value: 'minimal' },
-        { name: 'Database - Includes PostgreSQL setup', value: 'database' }
+        {
+          name: 'Full - Complete boilerplate with all features (recommended)',
+          value: 'full',
+          description: 'React + TypeScript + Tailwind + Database + Testing + CI/CD'
+        },
+        {
+          name: 'Minimal - Basic Tauri + React setup',
+          value: 'minimal',
+          description: 'Just React + TypeScript + Basic styling'
+        },
+        {
+          name: 'Database - Includes PostgreSQL setup',
+          value: 'database',
+          description: 'Full template + PostgreSQL + Docker + Migrations'
+        }
       ]
     });
   } else {
+    // Validate template option
+    const validTemplates = ['full', 'minimal', 'database'];
+    if (!validTemplates.includes(options.template)) {
+      console.error(chalk.red(`❌ Invalid template: ${options.template}`));
+      console.log(chalk.yellow(`Valid templates: ${validTemplates.join(', ')}`));
+      process.exit(1);
+    }
     config.template = options.template;
   }
 

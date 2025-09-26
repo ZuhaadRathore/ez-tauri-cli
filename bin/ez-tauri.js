@@ -4,6 +4,7 @@ import { program } from 'commander';
 import { createProject } from '../src/commands/create.js';
 import { initProject } from '../src/commands/init.js';
 import { addFeature } from '../src/commands/add.js';
+import { doctorCheck } from '../src/commands/doctor.js';
 import { showLogo } from '../src/utils/logo.js';
 
 program
@@ -34,6 +35,12 @@ program
   .description('Add features to existing EZ Tauri project')
   .argument('<feature>', 'Feature to add (database, testing, docker)')
   .action(addFeature);
+
+program
+  .command('doctor')
+  .description('Check system setup and dependencies')
+  .option('--verbose', 'Show detailed diagnostic information')
+  .action(doctorCheck);
 
 // Show logo when help is requested
 const originalOutputHelp = program.outputHelp;
