@@ -1,6 +1,6 @@
 {
   "name": "ez-tauri-cli",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "CLI tool to create EZ Tauri desktop applications with React, TypeScript, and Rust",
   "main": "bin/ez-tauri.js",
   "type": "module",
