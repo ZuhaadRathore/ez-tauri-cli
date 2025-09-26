@@ -73,9 +73,9 @@ ez-tauri create my-app --no-install --no-git
 
 | Template | Description | Included Features |
 |----------|-------------|-------------------|
-| **full** | Complete application boilerplate | React, TypeScript, Tailwind, Database, Testing, CI/CD |
-| **minimal** | Essential Tauri + React setup | React, TypeScript, Basic styling |
-| **database** | Data-driven application starter | PostgreSQL, SQLx, Migrations, Docker |
+| **full** | Complete application boilerplate | React, TypeScript, Tailwind, Database, Testing, CI/CD, Auto-updates |
+| **minimal** | Essential Tauri + React setup | React, TypeScript, Basic styling, Hot reload |
+| **database** | Data-driven application starter | PostgreSQL, SQLx, Migrations, Docker, Connection pooling |
 
 ### Command Line Options
 
@@ -111,8 +111,8 @@ Each generated project includes:
 | **Styling** | Tailwind CSS with automatic dark mode |
 | **State Management** | Zustand for global state |
 | **Routing** | React Router v6 |
-| **Desktop Runtime** | Tauri v2 (Rust-based) |
-| **Build Tools** | Vite for fast development |
+| **Desktop Runtime** | Tauri v2.1 (Rust-based) |
+| **Build Tools** | Vite 5 for fast development |
 
 ### Development Features
 
@@ -126,10 +126,10 @@ Each generated project includes:
 ### Production Capabilities
 
 - **Multi-platform Builds**: Windows (.msi), macOS (.dmg), Linux (.deb/.AppImage)
-- **Optimized Bundles**: ~10MB final application size
-- **Auto-updates**: Built-in update mechanism (optional)
-- **Code Signing**: Configuration for certificate signing
-- **CI/CD Pipelines**: GitHub Actions workflows included
+- **Optimized Bundles**: ~8MB final application size
+- **Auto-updates**: Enhanced update mechanism with rollback support
+- **Code Signing**: Simplified certificate signing workflow
+- **CI/CD Pipelines**: GitHub Actions workflows with enhanced caching
 
 ## System Requirements
 
@@ -140,7 +140,7 @@ The CLI will check for required dependencies and provide installation instructio
 | Requirement | Minimum Version | Installation Guide |
 |-------------|----------------|-------------------|
 | Node.js | 18.0.0 | [nodejs.org](https://nodejs.org/) |
-| Rust | 1.70.0 | [rustup.rs](https://rustup.rs/) |
+| Rust | 1.75.0 | [rustup.rs](https://rustup.rs/) |
 | Docker | 20.10 | Required for database template only |
 
 ### Platform-Specific Dependencies
@@ -187,9 +187,16 @@ npm run build
 npm run tauri:build
 ```
 
-## Upcoming Features
+## Version 1.2 Features
 
-The following commands are under development:
+**New in v1.2:**
+- Enhanced auto-update system with rollback capabilities
+- Improved bundle optimization (8MB vs 10MB)
+- Better error handling and recovery
+- Enhanced CI/CD pipelines with dependency caching
+- Streamlined code signing workflow
+
+**Upcoming Features:**
 
 ```bash
 # Initialize Tauri in existing React project
@@ -223,9 +230,9 @@ Generated projects include a `.ez-tauri.json` configuration file for project-spe
 
 ```json
 {
-  "version": "1.0.0",
+  "version": "1.2.0",
   "template": "full",
-  "features": ["database", "testing"],
+  "features": ["database", "testing", "auto-update"],
   "packageManager": "npm"
 }
 ```
