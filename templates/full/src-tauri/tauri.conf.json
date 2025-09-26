@@ -1,0 +1,38 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "EZ Tauri",
+  "version": "0.1.0",
+  "identifier": "com.tavuc.eztauri",
+  "build": {
+    "beforeDevCommand": "npm run dev",
+    "devUrl": "http://localhost:1420",
+    "beforeBuildCommand": "npm run build",
+    "frontendDist": "../dist"
+  },
+  "app": {
+    "windows": [
+      {
+        "title": "EZ Tauri",
+        "width": 800,
+        "height": 600,
+        "additionalBrowserArgs": "--disable-features=VizDisplayCompositor"
+      }
+    ],
+    "security": {
+      "csp": "default-src 'self'; img-src 'self' asset: data: blob:; font-src 'self' asset: data:; style-src 'self' asset: 'unsafe-inline'; script-src 'self'; connect-src 'self' ipc: http://127.0.0.1:* http://localhost:* ws://127.0.0.1:* ws://localhost:*; object-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; child-src 'none'; worker-src 'self'; media-src 'self' asset: data:; manifest-src 'self'; upgrade-insecure-requests;",
+      "dangerousDisableAssetCspModification": false,
+      "freezePrototype": true
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ]
+  }
+}
