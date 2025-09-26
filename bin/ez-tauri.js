@@ -9,7 +9,7 @@ import { showLogo } from '../src/utils/logo.js';
 program
   .name('ez-tauri')
   .description('CLI tool to create EZ Tauri desktop applications')
-  .version('1.0.0');
+  .version('1.1.0');
 
 program
   .command('create')
