@@ -3,8 +3,15 @@
 import { program } from 'commander';
 import { createProject } from '../src/commands/create.js';
 import { initProject } from '../src/commands/init.js';
-import { addFeature } from '../src/commands/add.js';
 import { doctorCheck } from '../src/commands/doctor.js';
+import {
+  listModules,
+  installModule,
+  uninstallModule,
+  showModuleInfo,
+  configureModule,
+  syncModules
+} from '../src/commands/modules.js';
 import { showLogo } from '../src/utils/logo.js';
 
 program
@@ -31,16 +38,45 @@ program
   .action(initProject);
 
 program
-  .command('add')
-  .description('Add features to existing EZ Tauri project')
-  .argument('<feature>', 'Feature to add (database, testing, docker)')
-  .action(addFeature);
-
-program
   .command('doctor')
   .description('Check system setup and dependencies')
   .option('--verbose', 'Show detailed diagnostic information')
   .action(doctorCheck);
+
+// Module management commands
+const modulesCmd = program
+  .command('modules')
+  .description('Manage project modules');
+
+modulesCmd
+  .command('list')
+  .description('List all available modules and their status')
+  .action(listModules);
+
+modulesCmd
+  .command('install <module-id>')
+  .description('Install and enable a module')
+  .action(installModule);
+
+modulesCmd
+  .command('uninstall <module-id>')
+  .description('Uninstall and disable a module')
+  .action(uninstallModule);
+
+modulesCmd
+  .command('info <module-id>')
+  .description('Show detailed information about a module')
+  .action(showModuleInfo);
+
+modulesCmd
+  .command('config <module-id> <key> <value>')
+  .description('Set a configuration value for an installed module')
+  .action(configureModule);
+
+modulesCmd
+  .command('sync')
+  .description('Sync module configuration with build files')
+  .action(syncModules);
 
 // Show logo when help is requested
 const originalOutputHelp = program.outputHelp;
